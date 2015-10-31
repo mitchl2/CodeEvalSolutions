@@ -79,3 +79,28 @@ class TestCityBuilding(unittest.TestCase):
 
         self._validate_contains_point(cb, inside_points, True)
         self._validate_contains_point(cb, outside_points, False)
+
+    def test_contains_point_arrow_head_building(self):
+        """Verifies that the contains_point function behaves correctly
+        with a building outline that forms a L shape (or arrow head).
+
+                 __________________
+                |                  |
+                |                  |
+                |                  |
+                |          ________|
+                |        |
+                |        |
+                |        |
+                |________|
+        """
+        cb = CityBuilding("ArrowHead",
+                          [(0.0, 0.0), (10.0, 0.0), (10.0, 10.0),
+                           (20.0, 10.0), (20.0, 30.0), (0.0, 30.0),
+                           (0.0, 0.0)])
+
+        inside_points = [(5.0, 10.0), (15.0, 10.0), (8.0, 25.0)]
+        outside_points = [(5.0, 9.99), (10.01, 3.65), (20.01, 10.0)]
+
+        self._validate_contains_point(cb, inside_points, True)
+        self._validate_contains_point(cb, outside_points, False)
