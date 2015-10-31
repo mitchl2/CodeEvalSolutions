@@ -29,7 +29,7 @@ class CityBuilding(object):
         """Checks if a point lies within the building boundaries.
 
         Args:
-            point: A 2D point as pair of numbers.
+            pt: A 2D point as pair of numbers.
         """
         pass
 
