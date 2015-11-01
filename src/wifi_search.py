@@ -25,6 +25,21 @@ class CityBuilding(object):
         """
         pass
 
+    def _is_line_segment_intersected(self, pt1, pt2, pt3):
+        """Checks if the line segment formed from pt1 to pt2 is intersected
+        by the line starts at pt3 and extends indefinitely in the direction
+        <1, 0>.
+
+        Args:
+            pt1: A 2D point as a pair of numbers.
+            pt2: A 2D point as a pair of numbers.
+            pt3: A 2D point as a pair of numbers.
+
+        Returns:
+            True if the line segment is intersected, else False.
+        """
+        pass
+
     def contains_point(self, pt):
         """Checks if a point lies within the building boundaries.
 
@@ -57,14 +72,14 @@ def hotspot_radar_locations(radar_data):
 
     Args:
         radar_data: A sequence of tuples. The first object in each tuple
-            contains a radar point, which is a point where the Wi-Fi radar was
-            currently at when a hotspot(s) was detected. The second object in
-            each tuple is a sequence of pairs containing a MAC address as a
+            contains a radar point, which is a 2D point where the Wi-Fi radar
+            was currently at when a hotspot(s) was detected. The second object
+            in each tuple is a sequence of pairs containing a MAC address as a
             string and azimuth as a number.
 
     Returns:
         A dictionary where each key is a MAC address and each value is a
-        sequence of pairs containing a radar point and a direction vector to
+        sequence of pairs containing a 2D radar point and a direction vector to
         a hotspot as a pair of numbers.
     """
     pass
@@ -79,9 +94,9 @@ def hotspot_location(pt1, dxdy1, pt2, dxdy2):
     determined.
 
     Args:
-        pt1: A radar point as a pair of numbers.
+        pt1: A 2D radar point as a pair of numbers.
         dxdy1: Direction vector to hotspot as a pair of numbers.
-        pt2: A radar point as a pair of numbers.
+        pt2: A 2D radar point as a pair of numbers.
         dxdy2: Direction vector to hotspot as a pair of numbers.
 
     Returns:
