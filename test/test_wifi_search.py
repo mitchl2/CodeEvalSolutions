@@ -9,7 +9,8 @@ Created on Oct 19, 2015
 import unittest
 
 from wifi_search import (CityBuilding, is_hotspot_in_building,
-                         is_line_segment_intersected, azimuth_to_vector)
+                         is_line_segment_intersected, azimuth_to_vector,
+                         hotspot_location)
 
 
 class TestWifiSearch(unittest.TestCase):
@@ -312,4 +313,26 @@ class TestWifiSearch(unittest.TestCase):
         self._validate_azimuth_to_vector(90, [1, 0])
         self._validate_azimuth_to_vector(180, [0, -1])
         self._validate_azimuth_to_vector(270, [-1, 0])
+
+    def test_hotspot_location_radar_lines_with_same_direction(self):
+        """Verifies that the hotspot_location function behaves correctly.
+        for radar lines that have the same direction.
+        """
+        # These lines should not intersect.
+        #
+        #             ^           ^
+        #            /           /
+        #           /           /
+        #          /           /
+        #         A          B
+        pt1 = (10.0, 10.0)
+        pt2 = (14.0, 7.0)
+        dxdy = (0.7071, 0.7071)
+        actual_hotspot_location = hotspot_location(pt1, dxdy, pt2, dxdy)
+        expected_hotspot_location = None
+        self.assertEqual(actual_hotspot_location, expected_hotspot_location,
+                         "Expected hotspot_location to return %s, but "
+                         "returned %s instead. pt1 is %s and pt2 is %s, "
+                         "both radar lines have the direction vector %s"
+                         % (str(pt1), str(pt2), dxdy))
 
