@@ -113,8 +113,9 @@ class TestWifiSearch(unittest.TestCase):
         # Special case for crossing number algorithm: Ray intersects a vertex
         # of the polygon. To resolve this special case, we only consider a
         # ray/vertex intersection to occur if the other vertex in the line
-        # segment is below the intersected vertex. In the case below, we
-        # expect this to count as a line segment intersection.
+        # segment has the same vertical position or it's below the intersected
+        # vertex. In the case below, we expect this to count as a line segment
+        # intersection.
         #
         #         X---------->A
         #                     |
@@ -189,7 +190,34 @@ class TestWifiSearch(unittest.TestCase):
         """Verifies that the _is_line_segment_intersected function behaves
         correctly for horizontal lines.
         """
-        pass
+        # Here we're intersecting two vertices of the line segment. This
+        # counts as intersection because both vertices have the same vertical
+        # position.
+        #
+        #          X--------->A------B
+        #
+        a1 = (10.0, 10.0)
+        b1 = (20.0, 10.0)
+        x1 = (5.0, 10.0)
+        self.assertTrue(
+            is_line_segment_intersected(a1, b1, x1),
+            "Expected is_line_segment_intersected to return True. Line  "
+            "segment starts at %s and ends at %s, and the ray in the direction "
+            "<1, 0> starts at %s" % (a1, b1, x1))
+
+        # Non-corner case for non-horizontal line segment intersection.
+        #
+        #          X--------->
+        #
+        #                     A-------B
+        a2 = (10.0, 10.0)
+        b2 = (20.0, 10.0)
+        x2 = (3.0, 12.0)
+        self.assertFalse(
+            is_line_segment_intersected(a2, b2, x2),
+            "Expected is_line_segment_intersected to return False. Line  "
+            "segment starts at %s and ends at %s, and the ray in the direction "
+            "<1, 0> starts at %s" % (a2, b2, x2))
 
     def test_is_line_segment_intersected_non_horizontal_or_vertical_line(self):
         """Verifies that the _is_line_segment_intersected function behaves
