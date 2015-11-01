@@ -12,10 +12,12 @@ from wifi_search import CityBuilding
 
 
 class TestCityBuilding(unittest.TestCase):
-    """Verifies the correct behavior of the CityBuilding class. Contains
-    general specification tests of the class as well as implementation
+    """Verifies the correct behavior of the CityBuilding class.
+
+    Contains general specification tests of the class as well as implementation
     tests (the crossing number algorithm is used to implement the
-    contains_point function).
+    contains_point function when checking if a point is contained within a
+    polygon).
     """
 
     def _validate_contains_point(self, cb, test_pts, is_inside_building):
