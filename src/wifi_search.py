@@ -28,13 +28,14 @@ class CityBuilding(object):
 
 def is_line_segment_intersected(self, pt1, pt2, pt3):
     """Checks if the line segment formed from pt1 to pt2 is intersected
-    by the line starts at pt3 and extends indefinitely in the direction
+    by the ray starting at pt3 and extends indefinitely in the direction
     <1, 0>.
 
     Args:
-        pt1: A 2D point as a pair of numbers.
-        pt2: A 2D point as a pair of numbers.
-        pt3: A 2D point as a pair of numbers.
+        pt1: A 2D point as a pair of numbers. Starting point of the line
+            segment.
+        pt2: A 2D point as a pair of numbers. End point of the line segment.
+        pt3: A 2D point as a pair of numbers. Starting point of the ray.
 
     Returns:
         True if the line segment is intersected, else False.

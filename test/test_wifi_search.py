@@ -8,7 +8,8 @@ Created on Oct 19, 2015
 
 import unittest
 
-from wifi_search import CityBuilding, is_hotspot_in_building
+from wifi_search import (CityBuilding, is_hotspot_in_building,
+                         is_line_segment_intersected)
 
 
 class TestWifiSearch(unittest.TestCase):
@@ -120,7 +121,16 @@ class TestWifiSearch(unittest.TestCase):
         #                     |
         #                     |
         #                     B
-        pass
+        a1 = (10.0, 10.0)
+        b1 = (10.0, 5.0)
+        x1 = (3.0, 10.0)
+        self.assertTrue(
+            is_line_segment_intersected(a1, b1, x1),
+            "Expected is_line_segment_intersected to return True for "
+            "the intersection with a vertex on a vertical line (where the"
+            "non-intersected vertex lies below the intersected vertex)."
+            "Line segment starts at %s and ends at %s, and the ray in the "
+            "direction <1, 0> starts at %s" % (a1, b1, x1))
 
     def test_is_line_segment_intersected_horizontal_line(self):
         """Verifies that the _is_line_segment_intersected function behaves
