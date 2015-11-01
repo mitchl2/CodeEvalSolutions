@@ -168,7 +168,7 @@ class TestWifiSearch(unittest.TestCase):
             "starts at %s and ends at %s, and the ray in the direction <1, 0> "
             "starts at %s" % (a2, b2, x2))
 
-        # Non-corner case for non-vertical line segment intersection.
+        # Non-corner case for vertical line segment non-intersection.
         #
         #          X--------->
         #
@@ -205,7 +205,7 @@ class TestWifiSearch(unittest.TestCase):
             "segment starts at %s and ends at %s, and the ray in the direction "
             "<1, 0> starts at %s" % (a1, b1, x1))
 
-        # Non-corner case for non-horizontal line segment intersection.
+        # Non-corner case for horizontal line segment non-intersection.
         #
         #          X--------->
         #
