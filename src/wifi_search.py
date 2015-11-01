@@ -50,7 +50,7 @@ def is_hotspot_in_building(cb, pt):
         pt: A hotspot location.
 
     Returns:
-        True if the hotspot location resides within the building.
+        True if the hotspot location resides within the building, else False.
     """
     pass
 
