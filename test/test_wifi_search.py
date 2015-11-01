@@ -9,7 +9,7 @@ Created on Oct 19, 2015
 import unittest
 
 from wifi_search import (CityBuilding, is_hotspot_in_building,
-                         is_line_segment_intersected)
+                         is_line_segment_intersected, azimuth_to_vector)
 
 
 class TestWifiSearch(unittest.TestCase):
@@ -289,3 +289,27 @@ class TestWifiSearch(unittest.TestCase):
             "Expected is_line_segment_intersected to return False. Line  "
             "segment starts at %s and ends at %s, and the ray in the direction "
             "<1, 0> starts at %s" % (a3, b3, x3))
+
+    def _validate_azimuth_to_vector(self,
+                                    azi_deg,
+                                    expected_dxdy):
+        """Checks that azimuth_to_vector returns the expected values.
+
+        Args:
+            azi_deg: Azimuth angle in degrees.
+            expected_dxdy: Expected vector returned by azimuth_to_vector.
+        """
+        actual_dxdy = azimuth_to_vector(azi_deg)
+        self.assertEqual(actual_dxdy, expected_dxdy,
+                         "Expected azimuth_to_vector to return %s for %d "
+                         "degrees, but returned %s instead"
+                         % (str(expected_dxdy), azi_deg, str(actual_dxdy)))
+
+    def test_azimuth_to_vector(self):
+        """Verifies that the azimuth_to_vector function behaves correctly.
+        """
+        self._validate_azimuth_to_vector(0, [0, 1])
+        self._validate_azimuth_to_vector(90, [1, 0])
+        self._validate_azimuth_to_vector(180, [0, -1])
+        self._validate_azimuth_to_vector(270, [-1, 0])
+
