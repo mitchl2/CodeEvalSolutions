@@ -30,15 +30,19 @@ class CityBuilding(object):
 
         Args:
             pt: A 2D point as pair of numbers.
+
+        Returns:
+            True if the point is contained on or within the building
+            boundaries, else false.
         """
         pass
 
 
-def azimuth_to_vector(azimuth):
+def azimuth_to_vector(azi_deg):
     """Converts an azimuth to a vector.
 
     Args:
-        azimuth: A direction in terms of an angles in degrees, where 0 degrees
+        azi_deg: A direction in terms of an angles in degrees, where 0 degrees
             corresponds to the positive y-axis direction.
 
     Returns:
@@ -48,7 +52,7 @@ def azimuth_to_vector(azimuth):
 
 
 def hotspot_radar_locations(radar_data):
-    """Determines all Wi-Fi radar points for each hotspot detected by Wi-Fi
+    """Determines all Wi-Fi radar points for each MAC address detected by Wi-Fi
     radar.
 
     Args:
@@ -61,7 +65,7 @@ def hotspot_radar_locations(radar_data):
     Returns:
         A dictionary where each key is a MAC address and each value is a
         sequence of pairs containing a radar point and a direction vector to
-        a hotspot as a pair of numners.
+        a hotspot as a pair of numbers.
     """
     pass
 
