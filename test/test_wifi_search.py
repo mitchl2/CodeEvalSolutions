@@ -33,7 +33,7 @@ class TestCityBuilding(unittest.TestCase):
                              is_inside_building,
                              "Expected to contains_point to return %s for "
                              "test point %s and building %s"
-                             % (str(pt), is_inside_building, cb.name))
+                             % (is_inside_building, str(pt), cb.name))
 
     def test_contains_point_simple_building(self):
         """Verifies that the contains_point function behaves correctly
