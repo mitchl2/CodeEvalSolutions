@@ -64,7 +64,7 @@ def azimuth_to_vector(azi_deg):
             corresponds to the positive y-axis direction.
 
     Returns:
-        A 2D direction vector as a pair of numbers.
+        A normalized 2D direction vector as a pair of numbers.
     """
     pass
 
