@@ -152,23 +152,23 @@ class TestWifiSearch(unittest.TestCase):
             "Line segment starts at %s and ends at %s, and the ray in the "
             "direction <1, 0> starts at %s" % (a2, b2, x2))
 
-        # Non-corner case for vertical line segment intersection.
+        # Non-special case for vertical line segment intersection.
         #
         #                     A
         #                     |
         #          X--------->|
         #                     |
         #                     B
-        a2 = (10.0, 10.0)
-        b2 = (10.0, 5.0)
-        x2 = (3.0, 7.0)
+        a3 = (10.0, 10.0)
+        b3 = (10.0, 5.0)
+        x3 = (3.0, 7.0)
         self.assertTrue(
-            is_line_segment_intersected(a2, b2, x2),
+            is_line_segment_intersected(a3, b3, x3),
             "Expected is_line_segment_intersected to return True. Line segment "
             "starts at %s and ends at %s, and the ray in the direction <1, 0> "
-            "starts at %s" % (a2, b2, x2))
+            "starts at %s" % (a3, b3, x3))
 
-        # Non-corner case for vertical line segment non-intersection.
+        # Non-special case for vertical line segment non-intersection.
         #
         #          X--------->
         #
@@ -177,14 +177,14 @@ class TestWifiSearch(unittest.TestCase):
         #                     |
         #                     |
         #                     B
-        a2 = (10.0, 10.0)
-        b2 = (10.0, 5.0)
-        x2 = (3.0, 12.0)
+        a4 = (10.0, 10.0)
+        b4 = (10.0, 5.0)
+        x4 = (3.0, 12.0)
         self.assertFalse(
-            is_line_segment_intersected(a2, b2, x2),
+            is_line_segment_intersected(a4, b4, x4),
             "Expected is_line_segment_intersected to return False. Line  "
             "segment starts at %s and ends at %s, and the ray in the direction "
-            "<1, 0> starts at %s" % (a2, b2, x2))
+            "<1, 0> starts at %s" % (a4, b4, x4))
 
     def test_is_line_segment_intersected_horizontal_line(self):
         """Verifies that the _is_line_segment_intersected function behaves
@@ -205,7 +205,7 @@ class TestWifiSearch(unittest.TestCase):
             "segment starts at %s and ends at %s, and the ray in the direction "
             "<1, 0> starts at %s" % (a1, b1, x1))
 
-        # Non-corner case for horizontal line segment non-intersection.
+        # Non-special case for horizontal line segment non-intersection.
         #
         #          X--------->
         #
@@ -223,4 +223,69 @@ class TestWifiSearch(unittest.TestCase):
         """Verifies that the _is_line_segment_intersected function behaves
         correctly for non-horizontal and non-vertical lines.
         """
-        pass
+        # Special case: Vertex is intersected, this is expected to count
+        # as an intersection because the non-intersected vertex is below
+        # the intersected vertex.
+        #
+        #       X---------> A
+        #                    \
+        #                     \
+        #                      \
+        #                       B
+        a1 = (10.0, 10.0)
+        b1 = (20.0, 2.0)
+        x1 = (5.0, 10.0)
+        self.assertTrue(
+            is_line_segment_intersected(a1, b1, x1),
+            "Expected is_line_segment_intersected to return True. Line  "
+            "segment starts at %s and ends at %s, and the ray in the direction "
+            "<1, 0> starts at %s" % (a1, b1, x1))
+
+        # Non-special case for non-horizontal/vertical line segment intersection.
+        #
+        #                   A
+        #                    \
+        #          X--------->\
+        #                      \
+        #                       B
+        a2 = (10.0, 10.0)
+        b2 = (20.0, 2.0)
+        x2 = (5.0, 5.0)
+        self.assertTrue(
+            is_line_segment_intersected(a2, b2, x2),
+            "Expected is_line_segment_intersected to return True. Line  "
+            "segment starts at %s and ends at %s, and the ray in the direction "
+            "<1, 0> starts at %s" % (a2, b2, x2))
+
+        # Special case for non-horizontal/vertical line segment intersection.
+        #
+        #                   A
+        #                    \
+        #          X--------->\
+        #                      \
+        #                       B
+        a2 = (10.0, 10.0)
+        b2 = (20.0, 2.0)
+        x2 = (5.0, 5.0)
+        self.assertTrue(
+            is_line_segment_intersected(a2, b2, x2),
+            "Expected is_line_segment_intersected to return True. Line  "
+            "segment starts at %s and ends at %s, and the ray in the direction "
+            "<1, 0> starts at %s" % (a2, b2, x2))
+
+        # Special case for non-horizontal/vertical line segment intersection
+        # (ray/vertex intersection).
+        #
+        #                   A
+        #                    \
+        #                     \
+        #                      \
+        #            X--------->B
+        a3 = (10.0, 10.0)
+        b3 = (20.0, 2.0)
+        x3 = (5.0, 2.0)
+        self.assertFalse(
+            is_line_segment_intersected(a3, b3, x3),
+            "Expected is_line_segment_intersected to return False. Line  "
+            "segment starts at %s and ends at %s, and the ray in the direction "
+            "<1, 0> starts at %s" % (a3, b3, x3))
