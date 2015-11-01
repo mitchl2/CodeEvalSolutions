@@ -25,32 +25,34 @@ class CityBuilding(object):
         """
         pass
 
-    def _is_line_segment_intersected(self, pt1, pt2, pt3):
-        """Checks if the line segment formed from pt1 to pt2 is intersected
-        by the line starts at pt3 and extends indefinitely in the direction
-        <1, 0>.
 
-        Args:
-            pt1: A 2D point as a pair of numbers.
-            pt2: A 2D point as a pair of numbers.
-            pt3: A 2D point as a pair of numbers.
+def is_line_segment_intersected(self, pt1, pt2, pt3):
+    """Checks if the line segment formed from pt1 to pt2 is intersected
+    by the line starts at pt3 and extends indefinitely in the direction
+    <1, 0>.
 
-        Returns:
-            True if the line segment is intersected, else False.
-        """
-        pass
+    Args:
+        pt1: A 2D point as a pair of numbers.
+        pt2: A 2D point as a pair of numbers.
+        pt3: A 2D point as a pair of numbers.
 
-    def contains_point(self, pt):
-        """Checks if a point lies within the building boundaries.
+    Returns:
+        True if the line segment is intersected, else False.
+    """
+    pass
 
-        Args:
-            pt: A 2D point as pair of numbers.
 
-        Returns:
-            True if the point is contained on or within the building
-            boundaries, else false.
-        """
-        pass
+def is_hotspot_in_building(cb, pt):
+    """Checks if the hotspot is located within the building.
+
+    Args:
+        cb: A CityBuilding.
+        pt: A hotspot location.
+
+    Returns:
+        True if the hotspot location resides within the building.
+    """
+    pass
 
 
 def azimuth_to_vector(azi_deg):
