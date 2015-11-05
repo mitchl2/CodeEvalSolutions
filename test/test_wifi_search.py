@@ -315,11 +315,11 @@ class TestWifiSearch(unittest.TestCase):
         self._validate_azimuth_to_vector(270, [-1, 0])
 
     def test_hotspot_location_radar_lines_with_same_direction(self):
-        """Verifies that the hotspot_location function behaves correctly.
+        """Verifies that the hotspot_location function behaves correctly
         for radar lines that have the same direction.
         """
         # These lines should not intersect because they point in the same
-        # direction. 
+        # direction.
         #                          ^
         #                        /
         #                      /
@@ -340,5 +340,25 @@ class TestWifiSearch(unittest.TestCase):
                          "Expected hotspot_location to return %s, but "
                          "returned %s instead. pt1 is %s and pt2 is %s, "
                          "both radar lines have the direction vector %s"
-                         % (str(pt1), str(pt2), dxdy))
+                         % (str(pt1), str(pt2), str(dxdy)))
 
+    def test_hotspot_location_intersecting_radar_lines(self):
+        """Verifies that the hotspot_location function behaves correctly
+        for intersecting radar lines.
+        """
+        #               ^
+        #             / |
+        #           /   |
+        #         /     |
+        #        A      B
+        pt1 = (10.0, 10.0)
+        dxdy1 = (0.7071, 0.7071)
+        pt2 = (20.0, 10.0)
+        dxdy2 = (0, 1)
+        actual_hotspot_location = hotspot_location(pt1, dxdy1, pt2, dxdy2)
+        expected_hotspot_location = (20.0, 20.0)
+        self.assertEqual(actual_hotspot_location, expected_hotspot_location,
+                         "Expected hotspot_location to return %s, but "
+                         "returned %s instead. pt1 is %s and pt2 is %s, "
+                         "dxdy1 is %s and dxdy2 is %s"
+                         % (str(pt1), str(pt2), str(dxdy1), str(dxdy2)))
