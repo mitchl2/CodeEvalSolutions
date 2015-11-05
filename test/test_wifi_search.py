@@ -366,11 +366,22 @@ class TestWifiSearch(unittest.TestCase):
         dxdy2 = (0, 1)
         actual_hotspot_location = hotspot_location(pt1, dxdy1, pt2, dxdy2)
         expected_hotspot_location = (20.0, 20.0)
-        self.assertEqual(actual_hotspot_location, expected_hotspot_location,
-                         "Expected hotspot_location to return %s, but "
-                         "returned %s instead. pt1 is %s and pt2 is %s, "
-                         "dxdy1 is %s and dxdy2 is %s"
-                         % (str(pt1), str(pt2), str(dxdy1), str(dxdy2)))
+
+        self.assertAlmostEqual(expected_hotspot_location[0],
+                               actual_hotspot_location[0],
+                               msg="Expected hotspot location x-value (%.3f) "
+                               "differs from actual hotspot location x-value "
+                               % (expected_hotspot_location[0],
+                                  actual_hotspot_location[0]),
+                               delta=2e-3)
+
+        self.assertAlmostEqual(expected_hotspot_location[1],
+                               actual_hotspot_location[1],
+                               msg="Expected hotspot location y-value (%.3f) "
+                               "differs from actual hotspot location y-value "
+                               % (expected_hotspot_location[1],
+                                  actual_hotspot_location[1]),
+                               delta=2e-3)
 
     def test_hotspot_radar_locations(self):
         """Verifies that the hotspot_radar_locations function behaves
