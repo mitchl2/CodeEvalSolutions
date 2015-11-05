@@ -301,10 +301,19 @@ class TestWifiSearch(unittest.TestCase):
             expected_dxdy: Expected vector returned by azimuth_to_vector.
         """
         actual_dxdy = azimuth_to_vector(azi_deg)
-        self.assertEqual(actual_dxdy, expected_dxdy,
-                         "Expected azimuth_to_vector to return %s for %d "
-                         "degrees, but returned %s instead"
-                         % (str(expected_dxdy), azi_deg, str(actual_dxdy)))
+        self.assertAlmostEqual(actual_dxdy[0],
+                               expected_dxdy[0],
+                               7,
+                               "Expected azimuth_to_vector to return dx value "
+                               "of %.3f, but returned dx value of %.3f instead"
+                               % (expected_dxdy[0], actual_dxdy[0]))
+
+        self.assertAlmostEqual(actual_dxdy[1],
+                               expected_dxdy[1],
+                               7,
+                               "Expected azimuth_to_vector to return dy value "
+                               "of %.3f, but returned dy value of %.3f instead"
+                               % (expected_dxdy[1], actual_dxdy[1]))
 
     def test_azimuth_to_vector(self):
         """Verifies that the azimuth_to_vector function behaves correctly.

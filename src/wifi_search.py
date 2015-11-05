@@ -9,6 +9,8 @@ Created on Oct 19, 2015
 @author: Mitchell Lee
 '''
 
+from math import cos, sin, radians, pi
+
 
 class CityBuilding(object):
     """A building from a city map. Contains functions for checking if an xy
@@ -66,7 +68,7 @@ def azimuth_to_vector(azi_deg):
     Returns:
         A normalized 2D direction vector as a pair of numbers.
     """
-    pass
+    return (-cos(radians(azi_deg) + pi / 2.0), sin(radians(azi_deg) + pi / 2.0))
 
 
 def hotspot_radar_locations(radar_data):
