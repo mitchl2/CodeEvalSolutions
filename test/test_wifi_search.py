@@ -349,7 +349,11 @@ class TestWifiSearch(unittest.TestCase):
                          "Expected hotspot_location to return %s, but "
                          "returned %s instead. pt1 is %s and pt2 is %s, "
                          "both radar lines have the direction vector %s"
-                         % (str(pt1), str(pt2), str(dxdy)))
+                         % (None,
+                            actual_hotspot_location,
+                            str(pt1),
+                            str(pt2),
+                            str(dxdy)))
 
     def test_hotspot_location_intersecting_radar_lines(self):
         """Verifies that the hotspot_location function behaves correctly
@@ -370,7 +374,7 @@ class TestWifiSearch(unittest.TestCase):
         self.assertAlmostEqual(expected_hotspot_location[0],
                                actual_hotspot_location[0],
                                msg="Expected hotspot location x-value (%.3f) "
-                               "differs from actual hotspot location x-value "
+                               "differs from actual hotspot location x-value (%.3f)"
                                % (expected_hotspot_location[0],
                                   actual_hotspot_location[0]),
                                delta=2e-3)
@@ -378,7 +382,7 @@ class TestWifiSearch(unittest.TestCase):
         self.assertAlmostEqual(expected_hotspot_location[1],
                                actual_hotspot_location[1],
                                msg="Expected hotspot location y-value (%.3f) "
-                               "differs from actual hotspot location y-value "
+                               "differs from actual hotspot location y-value (%.3f)"
                                % (expected_hotspot_location[1],
                                   actual_hotspot_location[1]),
                                delta=2e-3)

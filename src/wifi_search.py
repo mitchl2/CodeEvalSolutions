@@ -117,7 +117,37 @@ def hotspot_location(pt1, dxdy1, pt2, dxdy2):
         Hotspot location if two radar lines intersect, else None if the
         lines do not intersect and a hotspot location cannot be determined.
     """
-    pass
+    # Check if the radar lines point in the same direction (no intersection).
+    dx1, dy1 = dxdy1
+    dx2, dy2 = dxdy2
 
+    if abs(dx1 - dx2) < 1e-3 and abs(dy1 - dy2) < 1e-3:
+        return None
+    else:
+        # Compute intersection point of the lines.
+        x1, y1 = pt1
+        x2, y2 = pt2
 
+        if abs(dx1) < 1e-6:
+            # First radar line is vertical.
+            m2 = dy2 / dx2
+            b2 = y2 - (m2 * x2)
+            y_inter = m2 * x1 + b2
+            return (x1, y_inter)
+        elif abs(dx2) < 1e-6:
+            # Second radar line is vertical.
+            m1 = dy1 / dx1
+            b1 = y1 - (m1 * x1)
+            y_inter = m1 * x2 + b1
+            return (x2, y_inter)
+        else:
+            # Both lines are non-vertical.
+            m1 = dy1 / dx1
+            b1 = y1 - (m1 * x1)
 
+            m2 = dy2 / dx2
+            b2 = y2 - (m2 * x2)
+
+            x_inter = (b2 - b1) / (m1 - m2)
+            y_inter = m1 * x_inter + b1
+            return x_inter, y_inter
