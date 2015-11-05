@@ -10,7 +10,7 @@ import unittest
 
 from wifi_search import (CityBuilding, is_hotspot_in_building,
                          is_line_segment_intersected, azimuth_to_vector,
-                         hotspot_location)
+                         hotspot_location, hotspot_radar_locations)
 
 
 class TestWifiSearch(unittest.TestCase):
@@ -362,3 +362,26 @@ class TestWifiSearch(unittest.TestCase):
                          "returned %s instead. pt1 is %s and pt2 is %s, "
                          "dxdy1 is %s and dxdy2 is %s"
                          % (str(pt1), str(pt2), str(dxdy1), str(dxdy2)))
+
+        def test_hotspot_radar_locations(self):
+            """Verifies that the hotspot_radar_locations function behaves
+            correctly.
+            """
+            radar_data = [((5, 3), [("56-4c-18-eb-13-8b", 0),
+                                    ("88-fe-14-a4-aa-2a", 45)]),
+                          ((2, 3), [("56-4c-18-eb-13-8b", 45),
+                                    ("88-fe-14-a4-aa-2a", 30)])]
+
+            expected_radar_locations = {
+                "56-4c-18-eb-13-8b": [((5, 3), (0, 1)),
+                                      ((2, 3), (0.7071, 0.7071))],
+                "88-fe-14-a4-aa-2a": [((5, 3), (0.7071, 0.7071)),
+                                      ((2, 3), (0.866, 0.499))]}
+
+            actual_radar_locations = hotspot_radar_locations(radar_data)
+            self.assertEqual(expected_radar_locations,
+                             actual_radar_locations,
+                             "Expected hotspot_radar_locations to return %s, "
+                             "but it returned %s instead"
+                             % (str(expected_radar_locations),
+                                str(actual_radar_locations)))
