@@ -318,15 +318,21 @@ class TestWifiSearch(unittest.TestCase):
         """Verifies that the hotspot_location function behaves correctly.
         for radar lines that have the same direction.
         """
-        # These lines should not intersect.
+        # These lines should not intersect because they point in the same
+        # direction. 
+        #                          ^
+        #                        /
+        #                      /
+        #                    /
+        #                   B
         #
-        #             ^           ^
-        #            /           /
-        #           /           /
-        #          /           /
-        #         A          B
+        #                ^
+        #              /
+        #            /
+        #          /
+        #         A
         pt1 = (10.0, 10.0)
-        pt2 = (14.0, 7.0)
+        pt2 = (20.0, 20.0)
         dxdy = (0.7071, 0.7071)
         actual_hotspot_location = hotspot_location(pt1, dxdy, pt2, dxdy)
         expected_hotspot_location = None
