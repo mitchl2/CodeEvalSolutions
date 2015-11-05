@@ -28,7 +28,7 @@ class CityBuilding(object):
         pass
 
 
-def is_line_segment_intersected(self, pt1, pt2, pt3):
+def is_line_segment_intersected(pt1, pt2, pt3):
     """Checks if the line segment formed from pt1 to pt2 is intersected
     by the ray starting at pt3 and extends indefinitely in the direction
     <1, 0>.
@@ -42,7 +42,30 @@ def is_line_segment_intersected(self, pt1, pt2, pt3):
     Returns:
         True if the line segment is intersected, else False.
     """
-    pass
+    x1, y1 = pt1
+    x2, y2 = pt2
+    x3, y3 = pt3
+
+    if abs(y1 - y2) < 1e-3:
+        # Line segment is horizontal, check that the point on the same
+        # horizontal line.
+        return abs(y3 - y1) < 1e-3
+    else:
+        # Treat the line segment as parameterized line with respect to t.
+        # Compute t for which the ray from pt3 in the direction <1, 0>
+        # intersects the line.
+        t = (y3 - y1) / (-y1 + y2)
+        x_t = ((1 - t) * x1) + (t * x2)
+
+        if abs(t) < 1e-3 or abs(t - 1) < 1e-3:
+            # A line segment vertex is intersected, check here that the
+            # intersected vertex is vertically at or below the other vertex.
+            y_t = ((1 - t) * y1) + (t * y2)
+
+            y_other_vertex = y2 if t < 0.5 else y1
+            return y_other_vertex < y_t or abs(y_t - y_other_vertex) < 1e-3
+        else:
+            return t > 0.0 and t < 1.0 and (x_t >= x3)
 
 
 def is_hotspot_in_building(cb, pt):
