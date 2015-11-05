@@ -122,6 +122,7 @@ def hotspot_location(pt1, dxdy1, pt2, dxdy2):
     dx2, dy2 = dxdy2
 
     if abs(dx1 - dx2) < 1e-3 and abs(dy1 - dy2) < 1e-3:
+        # Can't compute intersection, lines are practically identical.
         return None
     else:
         # Compute intersection point of the lines.
