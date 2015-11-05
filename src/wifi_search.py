@@ -87,7 +87,16 @@ def hotspot_radar_locations(radar_data):
         sequence of pairs containing a 2D radar point and a direction vector to
         a hotspot as a pair of numbers.
     """
-    pass
+    radar_locations = {}
+
+    for pt, detected_hotspots in radar_data:
+        for mac, azi_deg in detected_hotspots:
+            if mac not in radar_locations:
+                radar_locations[mac] = []
+
+            radar_locations[mac].append((pt, azimuth_to_vector(azi_deg)))
+
+    return radar_locations
 
 
 def hotspot_location(pt1, dxdy1, pt2, dxdy2):

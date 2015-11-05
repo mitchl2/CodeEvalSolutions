@@ -372,25 +372,70 @@ class TestWifiSearch(unittest.TestCase):
                          "dxdy1 is %s and dxdy2 is %s"
                          % (str(pt1), str(pt2), str(dxdy1), str(dxdy2)))
 
-        def test_hotspot_radar_locations(self):
-            """Verifies that the hotspot_radar_locations function behaves
-            correctly.
-            """
-            radar_data = [((5, 3), [("56-4c-18-eb-13-8b", 0),
-                                    ("88-fe-14-a4-aa-2a", 45)]),
-                          ((2, 3), [("56-4c-18-eb-13-8b", 45),
-                                    ("88-fe-14-a4-aa-2a", 30)])]
+    def test_hotspot_radar_locations(self):
+        """Verifies that the hotspot_radar_locations function behaves
+        correctly.
+        """
+        radar_data = [((5, 3), [("56-4c-18-eb-13-8b", 0),
+                                ("88-fe-14-a4-aa-2a", 45)]),
+                      ((2, 3), [("56-4c-18-eb-13-8b", 45),
+                                ("88-fe-14-a4-aa-2a", 60)])]
 
-            expected_radar_locations = {
-                "56-4c-18-eb-13-8b": [((5, 3), (0, 1)),
-                                      ((2, 3), (0.7071, 0.7071))],
-                "88-fe-14-a4-aa-2a": [((5, 3), (0.7071, 0.7071)),
-                                      ((2, 3), (0.866, 0.499))]}
+        expected_radar_locations = {
+            "56-4c-18-eb-13-8b": [((5, 3), (0, 1)),
+                                  ((2, 3), (0.7071, 0.7071))],
+            "88-fe-14-a4-aa-2a": [((5, 3), (0.7071, 0.7071)),
+                                  ((2, 3), (0.866, 0.499))]}
 
-            actual_radar_locations = hotspot_radar_locations(radar_data)
-            self.assertEqual(expected_radar_locations,
-                             actual_radar_locations,
-                             "Expected hotspot_radar_locations to return %s, "
-                             "but it returned %s instead"
-                             % (str(expected_radar_locations),
-                                str(actual_radar_locations)))
+        actual_radar_locations = hotspot_radar_locations(radar_data)
+
+        for (exp_mac,
+             expected_detected_hotspots) in expected_radar_locations.iteritems():
+            self.assertTrue(exp_mac in actual_radar_locations,
+                            "'%s' MAC address missing from radar locations "
+                            "returned by hotspot_radar_locations (%s)"
+                            % (exp_mac, str(actual_radar_locations)))
+
+            actual_detected_hotspots = actual_radar_locations[exp_mac]
+
+            self.assertEqual(len(expected_detected_hotspots),
+                             len(actual_detected_hotspots),
+                             "Expected number of detected hotspots (%d) for "
+                             "the MAC address %s doesn't match the actual "
+                             "number of MAC addresses (%d)"
+                             % (len(expected_detected_hotspots),
+                                exp_mac,
+                                len(actual_detected_hotspots)))
+
+            for ((exp_pt, exp_azi_vec),
+                 (act_pt, act_azi_vec)) in zip(expected_detected_hotspots,
+                                               actual_detected_hotspots):
+                self.assertAlmostEqual(
+                   exp_pt[0], act_pt[0], 7,
+                   "Expected radar point x-value (%.3f) differs from actual "
+                   "radar point x-value (%.3f) for MAC address %s"
+                   % (exp_pt[0], act_pt[0], exp_mac))
+
+                self.assertAlmostEqual(
+                   exp_pt[1], act_pt[1], 7,
+                   "Expected radar point y-value (%.3f) differs from actual "
+                   "radar point y-value (%.3f) for MAC address %s"
+                   % (exp_pt[1], act_pt[1], exp_mac))
+
+                self.assertAlmostEqual(exp_azi_vec[0], act_azi_vec[0],
+                                       msg="Expected azimuth dx (%.3f) differs "
+                                       "from actual azimuth dx (%.3f) for "
+                                       "MAC address %s"
+                                       % (exp_azi_vec[0],
+                                          act_azi_vec[0],
+                                          exp_mac),
+                                       delta=2e-3)
+
+                self.assertAlmostEqual(exp_azi_vec[1], act_azi_vec[1],
+                                       msg="Expected azimuth dx (%.3f) differs "
+                                       "from actual azimuth dx (%.3f) for "
+                                       "MAC address %s"
+                                       % (exp_azi_vec[1],
+                                          act_azi_vec[1],
+                                          exp_mac),
+                                       delta=2e-3)
