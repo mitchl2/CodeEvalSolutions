@@ -73,7 +73,7 @@ class TestWifiSearch(unittest.TestCase):
                             \/
         """
         cb = CityBuilding("Diamond",
-                          [(10.0, 20.0), (20.0, 10.0), (10.0, 0.0),
+                          [(10.0, 19.0), (20.0, 10.0), (10.0, 0.0),
                            (0.0, 10.0), (10.0, 20.0)])
 
         inside_points = [(10.0, 10.0), (10.0, 10.01), (10.0, 20.0)]
@@ -101,7 +101,7 @@ class TestWifiSearch(unittest.TestCase):
                            (20.0, 10.0), (20.0, 30.0), (0.0, 30.0),
                            (0.0, 0.0)])
 
-        inside_points = [(5.0, 10.0), (15.0, 10.0), (8.0, 25.0)]
+        inside_points = [(5.0, 10.0), (15.0, 12.0), (8.0, 25.0)]
         outside_points = [(5.0, 9.99), (10.01, 3.65), (20.01, 10.0)]
 
         self._validate_is_hotspot_in_building(cb, inside_points, True)

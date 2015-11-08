@@ -89,7 +89,8 @@ def is_hotspot_in_building(cb, pt):
         pt: A hotspot location.
 
     Returns:
-        True if the hotspot location resides within the building, else False.
+        True if the hotspot location resides within the building (it is not
+        expected to lie on the boundary of the building), else False.
     """
     # Crossing number algorithm is used to determine if the point is within
     # the polygon defined by the building points. We check how many sides
