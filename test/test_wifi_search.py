@@ -51,7 +51,7 @@ class TestWifiSearch(unittest.TestCase):
                           [(0.0, 0.0), (0.0, 12.83), (34.04, 12.83),
                            (34.04, 0.0), (0.0, 0.0)])
 
-        inside_points = [(17.65, 4.43), (0.1, 0.1), (0.0, 0.0)]
+        inside_points = [(17.65, 4.43), (0.1, 0.1), (3.0, 3.0)]
         outside_points = [(36.21, 12.83), (0.0, 12.84), (37.54, 6.76)]
 
         self._validate_is_hotspot_in_building(cb, inside_points, True)
@@ -191,18 +191,16 @@ class TestWifiSearch(unittest.TestCase):
         """Verifies that the _is_line_segment_intersected function behaves
         correctly for horizontal lines.
         """
-        # Here we're intersecting two vertices of the line segment. This
-        # counts as intersection because both vertices have the same vertical
-        # position.
+        # The ray overlaps the the line segment, no intersection occurs here.
         #
         #          X--------->A------B
         #
         a1 = (10.0, 10.0)
         b1 = (20.0, 10.0)
         x1 = (5.0, 10.0)
-        self.assertTrue(
+        self.assertFalse(
             is_line_segment_intersected(a1, b1, x1),
-            "Expected is_line_segment_intersected to return True. Line  "
+            "Expected is_line_segment_intersected to return False. Line  "
             "segment starts at %s and ends at %s, and the ray in the direction "
             "<1, 0> starts at %s" % (a1, b1, x1))
 

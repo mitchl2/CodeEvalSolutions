@@ -54,12 +54,8 @@ def is_line_segment_intersected(pt1, pt2, pt3):
     x3, y3 = pt3
 
     if abs(y1 - y2) < POINT_CMP_TOL:
-        # Line segment is horizontal, check that the point is on the same
-        # horizontal line (and that the intersection occurs in the direction
-        # of the ray).
-        min_x = min([x1, x2])
-        return (abs(y3 - y1) < POINT_CMP_TOL
-                and (min_x > x3 or abs(min_x - x3) < POINT_CMP_TOL))
+        # Horizontal line segment, no intersection.
+        return False
     else:
         # Treat the line segment as parameterized line with respect to t.
         # Compute t for which the ray from pt3 in the direction <1, 0>
