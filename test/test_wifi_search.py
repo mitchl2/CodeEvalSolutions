@@ -54,8 +54,8 @@ class TestWifiSearch(unittest.TestCase):
         inside_points = [(17.65, 4.43), (0.1, 0.1), (0.0, 0.0)]
         outside_points = [(36.21, 12.83), (0.0, 12.84), (37.54, 6.76)]
 
-        self._validate_contains_point(cb, inside_points, True)
-        self._validate_contains_point(cb, outside_points, False)
+        self._validate_is_hotspot_in_building(cb, inside_points, True)
+        self._validate_is_hotspot_in_building(cb, outside_points, False)
 
     def test_is_hotspot_in_building_diamond_building(self):
         """Verifies that the is_hotspot_in_building function behaves correctly
@@ -79,8 +79,8 @@ class TestWifiSearch(unittest.TestCase):
         inside_points = [(10.0, 10.0), (10.0, 10.01), (10.0, 20.0)]
         outside_points = [(20.01, 10.0), (5.0, 5.0), (9.99, 19.99)]
 
-        self._validate_contains_point(cb, inside_points, True)
-        self._validate_contains_point(cb, outside_points, False)
+        self._validate_is_hotspot_in_building(cb, inside_points, True)
+        self._validate_is_hotspot_in_building(cb, outside_points, False)
 
     def test_is_hotspot_in_building_arrow_head_building(self):
         """Verifies that the is_hotspot_in_building function behaves correctly
@@ -104,8 +104,8 @@ class TestWifiSearch(unittest.TestCase):
         inside_points = [(5.0, 10.0), (15.0, 10.0), (8.0, 25.0)]
         outside_points = [(5.0, 9.99), (10.01, 3.65), (20.01, 10.0)]
 
-        self._validate_contains_point(cb, inside_points, True)
-        self._validate_contains_point(cb, outside_points, False)
+        self._validate_is_hotspot_in_building(cb, inside_points, True)
+        self._validate_is_hotspot_in_building(cb, outside_points, False)
 
     def test_is_line_segment_intersected_vertical_line(self):
         """Verifies that the _is_line_segment_intersected function behaves

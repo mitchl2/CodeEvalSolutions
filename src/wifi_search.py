@@ -9,6 +9,8 @@ Created on Oct 19, 2015
 @author: Mitchell Lee
 '''
 
+from itertools import izip
+
 from math import cos, sin, radians, pi
 
 
@@ -23,9 +25,11 @@ class CityBuilding(object):
         Args:
             name: Name of the building.
             pts: A sequence of 2D points, as pairs of numbers, that form
-            polygon vertices of the building outline.
+                polygon vertices of the building outline.
         """
-        pass
+        self.name = name
+        self.pts = pts
+        self.has_confirmed_wifi = False
 
 
 def is_line_segment_intersected(pt1, pt2, pt3):
@@ -48,8 +52,10 @@ def is_line_segment_intersected(pt1, pt2, pt3):
 
     if abs(y1 - y2) < 1e-3:
         # Line segment is horizontal, check that the point on the same
-        # horizontal line.
-        return abs(y3 - y1) < 1e-3
+        # horizontal line (and that the intersection occurs in the direction
+        # of the ray.
+        min_x = min([x1, x2])
+        return abs(y3 - y1) < 1e-3 and (min_x > x3 or abs(min_x - x3) < 1e-3)
     else:
         # Treat the line segment as parameterized line with respect to t.
         # Compute t for which the ray from pt3 in the direction <1, 0>
@@ -65,7 +71,7 @@ def is_line_segment_intersected(pt1, pt2, pt3):
             y_other_vertex = y2 if t < 0.5 else y1
             return y_other_vertex < y_t or abs(y_t - y_other_vertex) < 1e-3
         else:
-            return t > 0.0 and t < 1.0 and x_t > x3 or abs(x_t - x3) < 1e-3
+            return t > 0.0 and t < 1.0 and (x_t > x3 or abs(x_t - x3) < 1e-3)
 
 
 def is_hotspot_in_building(cb, pt):
@@ -78,7 +84,18 @@ def is_hotspot_in_building(cb, pt):
     Returns:
         True if the hotspot location resides within the building, else False.
     """
-    pass
+    # Crossing number algorithm is used to determine if the point is within
+    # the polygon defined by the building points. We check how many sides
+    # of the polygon are intersected by a ray that starts at pt and has the
+    # direction <1, 0>. If the number of crossings is odd, then the point
+    # is within the polygon, else it is not.
+
+    line_segment_crossings = []
+    for pt_a, pt_b in izip(cb.pts[:-1], cb.pts[1:]):
+        line_segment_crossings.append(
+            is_line_segment_intersected(pt_a, pt_b, pt))
+
+    return len([x for x in line_segment_crossings if x]) % 2 == 1
 
 
 def azimuth_to_vector(azi_deg):
