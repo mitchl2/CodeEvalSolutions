@@ -51,9 +51,9 @@ def is_line_segment_intersected(pt1, pt2, pt3):
     x3, y3 = pt3
 
     if abs(y1 - y2) < 1e-3:
-        # Line segment is horizontal, check that the point on the same
+        # Line segment is horizontal, check that the point is on the same
         # horizontal line (and that the intersection occurs in the direction
-        # of the ray.
+        # of the ray).
         min_x = min([x1, x2])
         return abs(y3 - y1) < 1e-3 and (min_x > x3 or abs(min_x - x3) < 1e-3)
     else:
@@ -63,7 +63,11 @@ def is_line_segment_intersected(pt1, pt2, pt3):
         t = (y3 - y1) / (-y1 + y2)
         x_t = ((1 - t) * x1) + (t * x2)
 
-        if abs(t) < 1e-3 or abs(t - 1) < 1e-3:
+        if x_t < x3:
+            # Intersection occurs to the left of the point being tested
+            # for ray intersection.
+            return False
+        elif abs(t) < 1e-3 or abs(t - 1) < 1e-3:
             # A line segment vertex is intersected, check here that the
             # intersected vertex is vertically at or below the other vertex.
             y_t = ((1 - t) * y1) + (t * y2)
