@@ -75,7 +75,9 @@ def is_line_segment_intersected(pt1, pt2, pt3):
             y_other_vertex = y2 if t < 0.5 else y1
             return y_other_vertex < y_t or abs(y_t - y_other_vertex) < 1e-3
         else:
-            return t > 0.0 and t < 1.0 and (x_t > x3 or abs(x_t - x3) < 1e-3)
+            # Check that the ray-line segment intersection occured within
+            # the parameterized line between pt1 and pt2.
+            return t > 0.0 and t < 1.0
 
 
 def is_hotspot_in_building(cb, pt):
