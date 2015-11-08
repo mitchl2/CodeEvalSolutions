@@ -13,6 +13,9 @@ from itertools import izip
 
 from math import cos, sin, radians, pi
 
+# Tolerance for comparing floating point numbers.
+POINT_CMP_TOL = 1e-3
+
 
 class CityBuilding(object):
     """A building from a city map. Contains functions for checking if an xy
@@ -50,12 +53,13 @@ def is_line_segment_intersected(pt1, pt2, pt3):
     x2, y2 = pt2
     x3, y3 = pt3
 
-    if abs(y1 - y2) < 1e-3:
+    if abs(y1 - y2) < POINT_CMP_TOL:
         # Line segment is horizontal, check that the point is on the same
         # horizontal line (and that the intersection occurs in the direction
         # of the ray).
         min_x = min([x1, x2])
-        return abs(y3 - y1) < 1e-3 and (min_x > x3 or abs(min_x - x3) < 1e-3)
+        return (abs(y3 - y1) < POINT_CMP_TOL
+                and (min_x > x3 or abs(min_x - x3) < POINT_CMP_TOL))
     else:
         # Treat the line segment as parameterized line with respect to t.
         # Compute t for which the ray from pt3 in the direction <1, 0>
@@ -67,13 +71,14 @@ def is_line_segment_intersected(pt1, pt2, pt3):
             # Intersection occurs to the left of the point being tested
             # for ray intersection.
             return False
-        elif abs(t) < 1e-3 or abs(t - 1) < 1e-3:
+        elif abs(t) < POINT_CMP_TOL or abs(t - 1) < POINT_CMP_TOL:
             # A line segment vertex is intersected, check here that the
             # intersected vertex is vertically at or below the other vertex.
             y_t = ((1 - t) * y1) + (t * y2)
 
             y_other_vertex = y2 if t < 0.5 else y1
-            return y_other_vertex < y_t or abs(y_t - y_other_vertex) < 1e-3
+            return (y_other_vertex < y_t
+                    or abs(y_t - y_other_vertex) < POINT_CMP_TOL)
         else:
             # Check that the ray-line segment intersection occured within
             # the parameterized line between pt1 and pt2.
@@ -167,7 +172,7 @@ def hotspot_location(pt1, dxdy1, pt2, dxdy2):
     dx1, dy1 = dxdy1
     dx2, dy2 = dxdy2
 
-    if abs(dx1 - dx2) < 1e-3 and abs(dy1 - dy2) < 1e-3:
+    if abs(dx1 - dx2) < POINT_CMP_TOL and abs(dy1 - dy2) < POINT_CMP_TOL:
         # Can't compute intersection, lines are practically identical.
         return None
     else:
@@ -175,13 +180,13 @@ def hotspot_location(pt1, dxdy1, pt2, dxdy2):
         x1, y1 = pt1
         x2, y2 = pt2
 
-        if abs(dx1) < 1e-6:
+        if abs(dx1) < POINT_CMP_TOL:
             # First radar line is vertical.
             m2 = dy2 / dx2
             b2 = y2 - (m2 * x2)
             y_inter = m2 * x1 + b2
             return (x1, y_inter)
-        elif abs(dx2) < 1e-6:
+        elif abs(dx2) < POINT_CMP_TOL:
             # Second radar line is vertical.
             m1 = dy1 / dx1
             b1 = y1 - (m1 * x1)
