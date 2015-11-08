@@ -14,7 +14,7 @@ from itertools import izip
 from math import cos, sin, radians, pi
 
 # Tolerance for comparing floating point numbers.
-POINT_CMP_TOL = 1e-3
+POINT_CMP_TOL = 1e-5
 
 
 class CityBuilding(object):
@@ -71,7 +71,7 @@ def is_line_segment_intersected(pt1, pt2, pt3):
             # Intersection occurs to the left of the point being tested
             # for ray intersection.
             return False
-        elif abs(t) < POINT_CMP_TOL or abs(t - 1) < POINT_CMP_TOL:
+        elif abs(t) < POINT_CMP_TOL or abs(1 - t) < POINT_CMP_TOL:
             # A line segment vertex is intersected, check here that the
             # intersected vertex is vertically at or below the other vertex.
             y_t = ((1 - t) * y1) + (t * y2)
@@ -100,7 +100,6 @@ def is_hotspot_in_building(cb, pt):
     # of the polygon are intersected by a ray that starts at pt and has the
     # direction <1, 0>. If the number of crossings is odd, then the point
     # is within the polygon, else it is not.
-
     line_segment_crossings = []
     for pt_a, pt_b in izip(cb.pts[:-1], cb.pts[1:]):
         line_segment_crossings.append(
