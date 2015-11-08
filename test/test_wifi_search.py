@@ -102,7 +102,7 @@ class TestWifiSearch(unittest.TestCase):
                            (0.0, 0.0)])
 
         inside_points = [(5.0, 10.0), (15.0, 12.0), (8.0, 25.0)]
-        outside_points = [(5.0, 9.99), (10.01, 3.65), (20.01, 10.0)]
+        outside_points = [(21.0, 10.0), (10.01, 3.65), (20.01, 10.0)]
 
         self._validate_is_hotspot_in_building(cb, inside_points, True)
         self._validate_is_hotspot_in_building(cb, outside_points, False)
