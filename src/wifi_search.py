@@ -9,6 +9,8 @@ Created on Oct 19, 2015
 @author: Mitchell Lee
 '''
 
+import sys
+
 from itertools import izip
 
 from math import cos, sin, radians, pi
@@ -73,8 +75,8 @@ def is_line_segment_intersected(pt1, pt2, pt3):
             y_t = ((1 - t) * y1) + (t * y2)
 
             y_other_vertex = y2 if t < 0.5 else y1
-            return (y_other_vertex < y_t
-                    or abs(y_t - y_other_vertex) < POINT_CMP_TOL)
+            return (y_other_vertex < y_t or
+                    abs(y_t - y_other_vertex) < POINT_CMP_TOL)
         else:
             # Check that the ray-line segment intersection occured within
             # the parameterized line between pt1 and pt2.
@@ -199,3 +201,86 @@ def hotspot_location(pt1, dxdy1, pt2, dxdy2):
             x_inter = (b2 - b1) / (m1 - m2)
             y_inter = m1 * x_inter + b1
             return x_inter, y_inter
+
+if __name__ == "__main__":
+    # Parse input
+    city_map_and_wifi_data_fh = open(sys.argv[1], 'r')
+
+    all_buildings = []
+    radar_data = []
+    is_city_map_parsed = False
+
+    for line in city_map_and_wifi_data_fh:
+        if line == "\n":
+            # Switching from building info lines to radar data
+            is_city_map_parsed = True
+        elif not is_city_map_parsed:
+            # Current line contains building info
+            building_name_and_pts = line.split(" ")
+
+            # Extract building name and points from the line
+            building_name = building_name_and_pts[0]
+            building_pts = [(float(pt_str.split(";")[0]),
+                             float(pt_str.split(";")[1])) for pt_str
+                            in building_name_and_pts[1:]]
+
+            all_buildings.append(CityBuilding(building_name, building_pts))
+        else:
+            # Current line contains radar data
+            radar_pt_and_mac_addresses = line.split(" ")
+
+            # Extract radar point
+            radar_pt_str = radar_pt_and_mac_addresses[0]
+            radar_pt = (float(radar_pt_str.split(";")[0]),
+                        float(radar_pt_str.split(";")[1]))
+
+            # Extract mac addresses/azimuths
+            mac_addresses = [(mac_str.split(";")[0],
+                              float(mac_str.split(";")[1])) for
+                             mac_str in radar_pt_and_mac_addresses[1:]]
+
+            radar_data.append((radar_pt, mac_addresses))
+
+    city_map_and_wifi_data_fh.close()
+
+    # Check for buildings with hotspots.
+    hotspot_radar_lookup = hotspot_radar_locations(radar_data)
+
+    for mac_address, radar_pts_and_vecs in hotspot_radar_lookup.iteritems():
+        if len(radar_pts_and_vecs) < 2:
+            # If less than two data points are available for a particular
+            # MAC address then there's no way to pin-point its location.
+            continue
+        else:
+            # Determine the physical location of the MAC address.
+            pt1, dxdy1 = radar_pts_and_vecs[0]
+            hotspot_pt = None
+
+            # Loop over until we find two radar lines that intersect. If we're
+            # really unlucky, the Wi-Fi car might detect a MAC address and
+            # then drive in one direction until the MAC address signal fades.
+            # In this case all of the radar lines will point in the same
+            # direction and we can't use two intersecting radar lines to
+            # pin-point the physical hotspot location.
+            for pt2, dxdy2 in radar_pts_and_vecs[1:]:
+                hotspot_pt = hotspot_location(pt1, dxdy1, pt2, dxdy2)
+
+                if hotspot_pt is not None:
+                    break
+
+            if hotspot_pt is None:
+                # Could not determine the physical location of this MAC
+                # address.
+                continue
+            else:
+                # Check if a building contains this hotspot.
+                for cb in all_buildings:
+                    if (not cb.has_confirmed_wifi and
+                            is_hotspot_in_building(cb, hotspot_pt)):
+                        cb.has_confirmed_wifi = True
+
+    # Report out all buildings which have confirmed hotspots.
+    for cb in all_buildings:
+        if cb.has_confirmed_wifi:
+            print cb.name
+            
