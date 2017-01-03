@@ -124,3 +124,19 @@ def find_max_sum(tree):
             return node.cached_sum
 
     return find_max(tree.root)
+
+
+if __name__ == "__main__":
+    import sys
+
+    # Parse input
+    nums = []
+    with open(sys.argv[1], 'r') as test_cases:
+        for test in test_cases:
+            nums.append([int(x) for x in test.split()])
+
+    # Create the tree of numbers
+    tree = create_num_tree(nums)
+
+    # Find the maximum sum
+    print find_max_sum(tree)
