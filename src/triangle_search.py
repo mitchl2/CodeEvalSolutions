@@ -54,8 +54,13 @@ def create_num_tree(nums):
     # respective list of numbers.
     node_cache = {}
 
-    def traverse_tree(nums, num_list_level, num_list_index):
+    def populate_tree(nums, num_list_level, num_list_index):
         """Helper function that creates a NumTree.
+
+        Args:
+            nums: A list of lists of numbers.
+            num_list_level: The current index into nums.
+            num_list_index: The current index into a list in nums.
         """
         if (num_list_level in node_cache and
             num_list_index in node_cache[num_list_level]):
@@ -74,16 +79,16 @@ def create_num_tree(nums):
 
             # Create left and right nodes
             if num_list_level != len(nums) - 1:
-                node.left = traverse_tree(nums,
+                node.left = populate_tree(nums,
                                           num_list_level + 1,
                                           num_list_index)
-                node.right = traverse_tree(nums,
+                node.right = populate_tree(nums,
                                            num_list_level + 1,
                                            num_list_index + 1)
 
             return node
 
-    return NumTree(traverse_tree(nums, 0, 0))
+    return NumTree(populate_tree(nums, 0, 0))
 
 
 def find_max_sum(tree):
@@ -95,4 +100,18 @@ def find_max_sum(tree):
     Returns:
         The maximum sum from the top to the bottom of the tree.
     """
-    pass
+    def find_max(node):
+        """Finds the maximum sum from the current node to its children.
+
+        Args:
+            node: A NumNode.
+
+        Returns:
+            The maximum sum from the current node to its children.
+        """
+        if node is None:
+            return 0
+        else:
+            return node.value + max(find_max(node.left), find_max(node.right))
+
+    return find_max(tree.root)
