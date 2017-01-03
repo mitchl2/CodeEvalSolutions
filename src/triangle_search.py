@@ -34,6 +34,7 @@ class NumNode(object):
         self.value = value
         self.left = None
         self.right = None
+        self.cached_sum = None
 
 
 def create_num_tree(nums):
@@ -111,7 +112,15 @@ def find_max_sum(tree):
         """
         if node is None:
             return 0
+        elif node.cached_sum is not None:
+            return node.cached_sum
         else:
-            return node.value + max(find_max(node.left), find_max(node.right))
+            # Since a node in the tree can have multiple parents, its sum
+            # is cached for future traversals.
+            cached_sum = (node.value
+                        + max(find_max(node.left), find_max(node.right)))
+
+            node.cached_sum = cached_sum
+            return node.cached_sum
 
     return find_max(tree.root)
