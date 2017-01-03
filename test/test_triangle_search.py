@@ -36,3 +36,15 @@ class TestTriangleSearch(unittest.TestCase):
                          1,
                          "Expected value (%d) differs from actual (%d)"
                          % (1, num_tree.root.right.left.right.value))
+
+    def test_find_max_sum(self):
+        """Tests the find_max_sum function.
+        """
+        nums = [[5], [9, 6], [4, 6, 8], [0, 7, 1, 5]]
+        num_tree = triangle_search.create_num_tree(nums)
+
+        actual_max_sum = triangle_search.find_max_sum(num_tree)
+        self.assertEqual(actual_max_sum,
+                         27,
+                         "Expected value (%d) differs from actual (%d)"
+                         % (27, actual_max_sum))
