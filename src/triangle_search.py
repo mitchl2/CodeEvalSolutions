@@ -42,12 +42,48 @@ def create_num_tree(nums):
     Args:
         nums: A list of lists, where each nested list contains a sequence
             of numbers, and the length of each consecutive nested list
-            increases by one.
+            increases by one. Must contain at least list.
 
     Returns:
         A NumTree containing all numbers.
     """
-    pass
+    if len(nums) == 0:
+        raise Exception("List of lists must be non-empty")
+
+    # A cache of Node objects by index in nums and index into their
+    # respective list of numbers.
+    node_cache = {}
+
+    def traverse_tree(nums, num_list_level, num_list_index):
+        """Helper function that creates a NumTree.
+        """
+        if (num_list_level in node_cache and
+            num_list_index in node_cache[num_list_level]):
+            return node_cache[num_list_level][num_list_index]
+        else:
+            if num_list_level not in node_cache:
+                node_cache[num_list_level] = {}
+
+            if num_list_index not in node_cache[num_list_level]:
+                node_cache[num_list_level][num_list_index] = {}
+
+            node = NumNode(nums[num_list_level][num_list_index])
+
+            # Store the node in the cache
+            node_cache[num_list_level][num_list_index] = node
+
+            # Create left and right nodes
+            if num_list_level != len(nums) - 1:
+                node.left = traverse_tree(nums,
+                                          num_list_level + 1,
+                                          num_list_index)
+                node.right = traverse_tree(nums,
+                                           num_list_level + 1,
+                                           num_list_index + 1)
+
+            return node
+
+    return NumTree(traverse_tree(nums, 0, 0))
 
 
 def find_max_sum(tree):
